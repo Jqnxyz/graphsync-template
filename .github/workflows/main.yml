@@ -1,0 +1,29 @@
+on: 
+  schedule:
+    # At 39 minutes past midnight, every day (Randomly chosen minute to avoid congestion with other scheduled actions)
+    - cron:  '39 0 * * *'
+  push:
+    branches:
+      - main
+
+jobs:
+  graphsync_job:
+    runs-on: ubuntu-latest
+    name: Sync Contribution Graph 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: GraphSync
+        uses: Jqnxyz/graphsync@v1.1.0
+        with:
+          source-graph-username: 'source-username-here'
+          source-graph-token: ${{ secrets.GRAPHSYNC_TOKEN }} # Add your source user's PAT token in the repository Actions Secrets
+          offset-hhmm: "offset-+/-hhmm-here" # e.g. +0800
+          git-author-name: "Your Name"
+          git-author-email: "Your Github Email" # This is the email that is linked to your Github account, attribute the commits to yourself
+      - name: Commit and push all changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Graph data updated by GraphSync"
+          commit_user_name: "GraphSync"
+          commit_author: "GraphSync Bot <graphsync@zenquah.dev>" # Use a different author than the owner to avoid contributing to the owner's commit count
