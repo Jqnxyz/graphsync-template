@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: GraphSync
-        uses: Jqnxyz/graphsync@v1.1.0
+        uses: Jqnxyz/graphsync@v1.2.0
         with:
           source-graph-username: 'source-username-here'
           source-graph-token: ${{ secrets.GRAPHSYNC_TOKEN }} # Add your source user's PAT token in the repository Actions Secrets
